@@ -23,14 +23,15 @@ deployment:
       cpu: "500m"
       memory: "256Mi"
   securityContext:
-    seccompProfile:
-      type: RuntimeDefault
-    runAsNonRoot: true
-    readOnlyRootFilesystem: true
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop:
-        - ALL
+    container: # Move entire security context here
+      runAsNonRoot: true
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      seccompProfile:
+        type: RuntimeDefault
   livenessProbe:
     httpGet:
       path: /

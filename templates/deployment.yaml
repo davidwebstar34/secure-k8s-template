@@ -31,27 +31,19 @@ spec:
         runAsUser: {{ .Values.podSecurityContext.runAsUser }}
         runAsGroup: {{ .Values.podSecurityContext.runAsGroup }}
         fsGroup: {{ .Values.podSecurityContext.fsGroup }}
-        seccompProfile:
-            type: {{ .Values.deployment.securityContext.seccompProfile.type }}
       containers:
         - name: {{ .Values.deployment.name }}-container
           image: "{{ .Values.deployment.image.repository }}"
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.deployment.containerPort }}
-          resources:
-            requests:
-              cpu: {{ .Values.deployment.resources.requests.cpu | quote }}
-              memory: {{ .Values.deployment.resources.requests.memory | quote }}
-            limits:
-              cpu: {{ .Values.deployment.resources.limits.cpu | quote }}
-              memory: {{ .Values.deployment.resources.limits.memory | quote }}
-          securityContext:
-            {{- include "secure-k8s.securityContext" . | nindent 12 }}
+          resources: {{ toYaml .Values.deployment.resources | nindent 12 }}
+          securityContext: {{ toYaml .Values.deployment.securityContext.container | nindent 12 }}
           volumeMounts:
             - name: tmp-volume
               mountPath: /tmp
-          {{- include "secure-k8s.probes" . | nindent 10 }}
+          livenessProbe: {{ toYaml .Values.deployment.livenessProbe | nindent 12 }}
+          readinessProbe: {{ toYaml .Values.deployment.readinessProbe | nindent 12 }}
       volumes:
         - name: tmp-volume
           emptyDir: {}
