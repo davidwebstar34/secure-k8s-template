@@ -4,6 +4,7 @@ namespace:
 serviceAccount:
   name: secure-k8s-sa
   iamRoleArn: "arn:aws:iam::123456789012:role/MyK8sServiceAccountRole" # IRSA IAM Role
+  automountServiceAccountToken: false
 
 tenant: "tenant-A"
 
@@ -50,6 +51,7 @@ deployment:
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: 11000
+  runAsGroup: 11000
   fsGroup: 2000
 
 networkPolicy:

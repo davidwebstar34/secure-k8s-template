@@ -24,10 +24,12 @@ spec:
         app.kubernetes.io/name: {{ .Values.deployment.name }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
       securityContext:
         runAsNonRoot: {{ .Values.podSecurityContext.runAsNonRoot }}
         runAsUser: {{ .Values.podSecurityContext.runAsUser }}
+        runAsGroup: {{ .Values.podSecurityContext.runAsGroup }}
         fsGroup: {{ .Values.podSecurityContext.fsGroup }}
         seccompProfile:
             type: {{ .Values.deployment.securityContext.seccompProfile.type }}
