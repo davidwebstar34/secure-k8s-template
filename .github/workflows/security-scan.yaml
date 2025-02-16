@@ -13,10 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install kubeaudit
+        run: |
+          curl -sSL https://github.com/control-plane/kubeaudit/releases/latest/download/kubeaudit-linux-amd64 -o kubeaudit
+          chmod +x kubeaudit
+          sudo mv kubeaudit /usr/local/bin/
+
       - name: Run kubeaudit
-        uses: control-plane/kubeaudit-action@v0.1
-        with:
-          command: "all -k ./"
+        run: kubeaudit all -k ./
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
