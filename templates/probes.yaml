@@ -1,0 +1,15 @@
+{{- define "secure-k8s.probes" -}}
+livenessProbe:
+  httpGet:
+    path: {{ .Values.deployment.livenessProbe.httpGet.path }}
+    port: {{ .Values.deployment.livenessProbe.httpGet.port }}
+  initialDelaySeconds: {{ .Values.deployment.livenessProbe.initialDelaySeconds }}
+  periodSeconds: {{ .Values.deployment.livenessProbe.periodSeconds }}
+
+readinessProbe:
+  httpGet:
+    path: {{ .Values.deployment.readinessProbe.httpGet.path }}
+    port: {{ .Values.deployment.readinessProbe.httpGet.port }}
+  initialDelaySeconds: {{ .Values.deployment.readinessProbe.initialDelaySeconds }}
+  periodSeconds: {{ .Values.deployment.readinessProbe.periodSeconds }}
+{{- end -}}

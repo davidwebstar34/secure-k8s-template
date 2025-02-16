@@ -47,31 +47,11 @@ spec:
               cpu: {{ .Values.deployment.resources.limits.cpu | quote }}
               memory: {{ .Values.deployment.resources.limits.memory | quote }}
           securityContext:
-            runAsNonRoot: {{ .Values.deployment.securityContext.runAsNonRoot }}
-            readOnlyRootFilesystem: {{ .Values.deployment.securityContext.readOnlyRootFilesystem }}
-            allowPrivilegeEscalation: {{ .Values.deployment.securityContext.allowPrivilegeEscalation }}
-            capabilities:
-              drop: 
-                {{- range .Values.deployment.securityContext.capabilities.drop }}
-                - {{ . | quote }}
-                {{- end }}
-            seccompProfile:
-                type: {{ .Values.deployment.securityContext.seccompProfile.type }}
+            {{- include "secure-k8s.securityContext" . | nindent 12 }}
           volumeMounts:
             - name: tmp-volume
               mountPath: /tmp
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.deployment.livenessProbe.httpGet.path }}
-              port: {{ .Values.deployment.livenessProbe.httpGet.port }}
-            initialDelaySeconds: {{ .Values.deployment.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.deployment.livenessProbe.periodSeconds }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.deployment.readinessProbe.httpGet.path }}
-              port: {{ .Values.deployment.readinessProbe.httpGet.port }}
-            initialDelaySeconds: {{ .Values.deployment.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.deployment.readinessProbe.periodSeconds }}
+          {{- include "secure-k8s.probes" . | nindent 10 }}
       volumes:
         - name: tmp-volume
           emptyDir: {}
