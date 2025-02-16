@@ -11,21 +11,25 @@ spec:
   policyTypes:
     - Ingress
     - Egress
+
   {{- if .Values.networkPolicy.allowIngress }}
   ingress:
     - from:
-        - podSelector: {}
+        - podSelector: {}  
       ports:
         - protocol: TCP
           port: {{ .Values.deployment.containerPort }}
   {{- end }}
-  {{- if .Values.networkPolicy.allowSQS }}
+
+  {{- if .Values.networkPolicy.allowService }}
   egress:
+    {{- range .Values.networkPolicy.serviceCidrs }}
     - to:
         - ipBlock:
-            cidr: {{ .Values.networkPolicy.sqsCidr }}
+            cidr: {{ . }}
       ports:
         - protocol: TCP
-          port: 443
+          port: 443  
+    {{- end }}
   {{- end }}
 {{- end }}
