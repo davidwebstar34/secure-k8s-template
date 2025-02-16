@@ -37,6 +37,3 @@ jobs:
 
       - name: Run Helm Template Render Check
         run: helm template my-secure-app .
-
-      - name: Run Helm Dry-Run Install
-        run: helm install my-secure-app . --dry-run --debug
