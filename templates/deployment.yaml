@@ -29,9 +29,11 @@ spec:
         runAsNonRoot: {{ .Values.podSecurityContext.runAsNonRoot }}
         runAsUser: {{ .Values.podSecurityContext.runAsUser }}
         fsGroup: {{ .Values.podSecurityContext.fsGroup }}
+        seccompProfile:
+            type: {{ .Values.deployment.securityContext.seccompProfile.type }}
       containers:
         - name: {{ .Values.deployment.name }}-container
-          image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}"
+          image: "{{ .Values.deployment.image.repository }}"
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.deployment.containerPort }}
@@ -51,6 +53,8 @@ spec:
                 {{- range .Values.deployment.securityContext.capabilities.drop }}
                 - {{ . | quote }}
                 {{- end }}
+            seccompProfile:
+                type: {{ .Values.deployment.securityContext.seccompProfile.type }}
           volumeMounts:
             - name: tmp-volume
               mountPath: /tmp
