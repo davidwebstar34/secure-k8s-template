@@ -3,8 +3,8 @@ namespace:
 
 serviceAccount:
   name: secure-k8s-sa
-  iamRoleArn: "arn:aws:iam::123456789012:role/MyK8sServiceAccountRole" # IRSA IAM Role
   automountServiceAccountToken: false
+  annotations: {}
 
 tenant: "tenant-A"
 
