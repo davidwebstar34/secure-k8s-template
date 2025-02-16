@@ -1,0 +1,32 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  security-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run kube-linter
+        uses: stackrox/kube-linter-action@v0.2.0
+        with:
+          paths: "./"
+
+      - name: Install Helm
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+      - name: Run Helm Lint
+        run: helm lint .
+
+      - name: Run Helm Template Render Check
+        run: helm template my-secure-app .
+
+      - name: Run Helm Dry-Run Install
+        run: helm install my-secure-app . --dry-run --debug
