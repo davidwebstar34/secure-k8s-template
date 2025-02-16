@@ -53,26 +53,3 @@ podSecurityContext:
   runAsUser: 11000
   runAsGroup: 11000
   fsGroup: 2000
-
-networkPolicy:
-  enabled: true
-  allowService: true
-  serviceCidrs:
-    - "192.168.100.0/24"
-    - "192.168.101.0/24"
-    - "192.168.102.0/24"
-  allowIngress: true
-
-ingress:
-  enabled: true
-  host: my-app.example.com
-  annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: instance
-
-service:
-  enabled: true
-  type: LoadBalancer
-  externalPort: 80
-  internalPort: 8080
