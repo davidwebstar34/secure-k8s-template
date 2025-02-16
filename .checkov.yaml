@@ -1,0 +1,2 @@
+skip-check:
+  - CKV2_K8S_6 # Skip NetworkPolicy as that must be done externally
