@@ -13,15 +13,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Run kube-linter
-        uses: stackrox/kube-linter-action@v0.2.0
+      - name: Run kubeaudit
+        uses: control-plane/kubeaudit-action@v0.1
         with:
-          paths: "./"
+          command: "all -k ./"
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "config"
+          scan-ref: "./"
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: "./"
 
       - name: Install Helm
         run: |
           curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
       - name: Run Helm Lint
         run: helm lint .
 
