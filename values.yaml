@@ -23,7 +23,7 @@ deployment:
       cpu: "500m"
       memory: "256Mi"
   securityContext:
-    container: # Move entire security context here
+    container: 
       runAsNonRoot: true
       readOnlyRootFilesystem: true
       allowPrivilegeEscalation: false
